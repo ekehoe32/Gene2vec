@@ -55,7 +55,7 @@ print(current_time)
 print("shuffle done " + str(len(gene_pairs)))
 
 ####training parameters########
-dimension = 100  # dimension of the embedding
+dimension = 200  # dimension of the embedding
 num_workers = 32  # number of worker threads
 sg = 1  # sg =1, skip-gram, sg =0, CBOW
 max_iter = 10  # number of iterations
@@ -68,9 +68,9 @@ for current_iter in range(1,max_iter+1):
     if current_iter == 1:
         print("gene2vec dimension "+ str(dimension) +" iteration "+ str(current_iter)+ " start")
         model = gensim.models.Word2Vec(gene_pairs, size=dimension, window=window_size, min_count=1, workers=num_workers, iter=1, sg=sg)
-        model.save(export_dir+"gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter))
+        model.save(os.path.join(export_dir, "gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter)))
         if txtOutput:
-            gM.outputTxt(export_dir+"gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter))
+            gM.outputTxt(os.path.join(export_dir, "gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter)))
         print("gene2vec dimension "+ str(dimension) +" iteration "+ str(current_iter)+ " done")
         del model
     else:
@@ -83,10 +83,10 @@ for current_iter in range(1,max_iter+1):
         print("shuffle done " + str(len(gene_pairs)))
 
         print("gene2vec dimension " + str(dimension) + " iteration " + str(current_iter) + " start")
-        model = gensim.models.Word2Vec.load(export_dir+"gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter-1))
+        model = gensim.models.Word2Vec.load(os.path.join(export_dir, "gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter-1)))
         model.train(gene_pairs,total_examples=model.corpus_count,epochs=model.iter)
-        model.save(export_dir+"gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter))
+        model.save(os.path.join(export_dir, "gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter)))
         if txtOutput:
-            gM.outputTxt(export_dir+"gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter))
+            gM.outputTxt(os.path.join(export_dir, "gene2vec_dim_"+str(dimension)+"_iter_"+str(current_iter)))
         print("gene2vec dimension " + str(dimension) + " iteration " + str(current_iter) + " done")
         del model
