@@ -58,7 +58,7 @@ def coexpr(data: pd.DataFrame) -> list:
     print(f"Computing gene co-expressions with correlation threshold={args.corr_threshold}...")
     for row, col in zip(rows, cols):
 
-        if row < col:
+        if row != col:
             # extract gene identifiers
             gene_pairs.append(f"{corr.index[row]} {corr.index[col]}")
     
